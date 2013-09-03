@@ -1,0 +1,5 @@
+To do list:
+
+- Daemon do exec iptables rules.
+- Make a 30-bit network for each user.
+- Integrate DHCPD. Each user have a file in dhcpd linking the MAC to IP address on trust network.

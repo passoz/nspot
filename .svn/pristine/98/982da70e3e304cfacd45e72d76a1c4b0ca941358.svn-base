@@ -1,0 +1,40 @@
+<table width="600" height="300" border=0>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td align=center><a href=admin>Volta para Administra&ccedil;&atilde;o</a></td></tr>
+	<tr>
+		<td>
+		<font size="1">
+		<table border="0" cellpadding="3">
+			<th>Id</th>
+			<th>Nome</th>
+			<th>Endere&ccedil;o</th>
+			<th>Bairro</th>
+			<th>CPF</th>
+			<th>RG</th>
+			<th>Bloqueado?</th>
+			<th>Banido?</th>
+			#for $i in $users
+			<tr>
+				<td>$i.id</td>
+				<td>$i.name</td>
+				<td>$i.address</td>
+				<td>$i.neighborhood</td>
+				<td>$i.cpf</td>
+				<td>$i.rg</td>
+				<td>$bld.is_blocked($i)</td>
+				<td>$bnd.is_banned($i)</td>
+			</tr>
+			#end for
+		</table>
+		</font>
+		</td>
+	</tr>
+	<tr>
+		<td height="50">&nbsp</td>
+	</tr>
+	<tr>
+		<td>
+		<div align="center">$msg_login</div>
+		</td>
+	</tr>
+</table>

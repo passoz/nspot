@@ -1,0 +1,54 @@
+#!/usr/bin/python
+
+
+#from SOAPpy import SOAPProxy
+import os
+import cgi
+from nspot import SystemMessages, Arp, SystemProperties, UserDAO, BlockedDAO, MessageDAO
+import cgitb; cgitb.enable()
+#from cherrytemplate import renderTemplate
+import datetime
+from Cookie import SimpleCookie
+from Cheetah.Template import Template
+
+
+form = cgi.FieldStorage()
+
+sp = SystemProperties()
+arp = Arp()
+sm = SystemMessages()
+
+t = Template(file = sp.get_web_root()+'/htdocs/pages/templates/baselayout.html')
+
+t.system_message = 'System Administration' #self.sm.msg_allfields()
+t.msg_login = '' #sm.msg_login()
+t.page_title = sm.get_title()
+t.head_redirect = "no" # can be yes or no
+t.head_to_login = "no" # can be yes or no
+t.body_page = "auth" # can be login, register or none
+t.body_message = ''
+
+user = form.getvalue('user')
+pw = form.getvalue('pw')
+
+        
+
+if user == None or pw == None or len(user) < 1 or len(pw) < 1 :
+    print "Content-type: text/html\n\n"
+    t.system_message = '' #self.sm.msg_allfields()
+    print t
+elif user != 'admin' or pw != sp.get_admin_pass():
+    print "Content-type: text/html\n\n"
+    t.system_message = sm.msg_wrongpassword()
+    print t
+else:
+    if os.environ.has_key('HTTP_COOKIE'):
+	c = SimpleCookie(os.environ['HTTP_COOKIE'])
+    else:
+	c = SimpleCookie()
+
+    c['adm'] = '1'
+    print c
+
+    print "Content-type: text/html\n\n"
+    print '<meta http-equiv="refresh" content="0; URL=http://'+sp.get_ip_internal()+'/cgi-bin/admin">'

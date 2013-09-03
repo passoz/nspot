@@ -1,0 +1,38 @@
+<form action='admin' method=post>
+<input name="cmd" type="hidden" value="msg">
+<input name="uid" type="hidden" value=$uid>
+<table width="600" height="300" border=0>
+	<tr>
+		<td>
+		<table border="0" cellspacing="20">
+			<tr>
+				<td width="80" align="right">Usu&aacute;rio</td>
+				<td>
+				<select name="dst">
+					<option value=$uid>$uid</option>
+					<option value="all">all</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td width="80" align="right">Mensagem</td>
+				<td><input name="msg" type="text" size="100">
+				</td>
+			</tr>
+			<tr>
+				<td height="60" width="80"></td>
+				<td><input type="submit" value="       Ok       "></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td height="50">&nbsp</td>
+	</tr>
+	<tr>
+		<td>
+		<div align="center">$msg_login</div>
+		</td>
+	</tr>
+</table>
+</form>

@@ -1,0 +1,46 @@
+[config]
+if_internal = eth3
+if_external = eth2
+mysql_user = nspot
+mysql_password = nspot
+mysql_host = localhost
+dns_primary = 172.18.9.1
+dns_local = 10.0.0.254
+ip_internal = 10.0.0.254
+ip_external = ""
+local_network = 10.0.0
+trust_network = 172.20
+hostname = net
+webservice_port = 9900
+web_port = 80
+ssl_port = 443
+initial_page = www.google.com.br/?
+default_bandwidth = 64
+system_mode = pass
+network = jardim
+files = /etc/nspot/
+web_root = /var/www/
+mask_internal = 255.255.255.0
+ip_classes = 10.0.0
+admin_pass = qazwsxedc
+
+[msg]
+
+msg_allfields = Voc&ecirc; deixou de digitar alguns campos obrigat&oacute;rios do formul&aacute;rio. Por favor, preencha todos os campos corretamente.
+msg_alreadyenabled = Seu computador j&aacute; foi liberado para a navega&ccedil;&atilde;o. Tente acessar novamente a p&aacute;gina ou pressionando o botao &quot;Ctrl&quot; e clicando em &quot;Atualizar&quot; no seu navegador.
+msg_support = Para maiores informa&ccedil;&otilde;es, entre em contato com o suporte pelo telefone (22) 2626-2626.
+msg_alreadyregistered = Seu computador j&aacute; foi cadastrado em nosso sistema.
+msg_blocked = O acesso para este  computador foi automaticamente bloqueado pelo nosso sistema.
+msg_enabled = Seu acesso j&aacute; foi liberado pelo nosso sistema. Volte para a p&aacute;gina anterior, pressione a tecla &quot;Ctrl&quot; e clique no bot&atilde;o &quot;Atualizar&quot; de seu navegador para visualizar a p&aacute;gina corretamente.
+msg_existmail = Este e-mail j&aacute; foi cadastrado em nosso sistema. Volte para a p&aacute;gina anterior e tente cadastrar outro.Se voc&ecirc; ainda n&atilde;o &eacute; cadastrado em nosso sistema, <a href='register.html'>clique aqui</a>
+msg_login = Se voc&ecirc; ainda n&atilde;o &eacute; cadastrado em nosso sistema, <a href='register_page'>clique aqui</a>
+msg_loginok = Seu acesso j&aacute; foi liberado pelo nosso sistema. Boa navega&ccedil;&atilde;o!
+msg_notregistered = Seu computador n&atilde;o est&aacute; cadastrado em nosso sistema.
+msg_register = Preencha o formul&aacute;rio para continuar o acesso. Todos os campos s&atilde;o de preenchimento obrigat&oacute;rio.
+msg_registerok = Seu cadastro est&aacute; completo! Seu acesso j&aacute; est&aacute; sendo liberado pelo nosso sistema.
+msg_wrongpassword = Usu&aacute;rio ou senha inv&aacute;lidos.
+msg_wrongip = Endere&ccedil;o IP inv&aacute;lido.
+msg_warning = Voc&ecirc; recebeu as seguintes mensagens(Para contunuar a navega&ccedil;&atilde;o pressione a tecla F5):<br><br>
+msg_notsamepassword = As senhas fornecidas n&atilde;o coincidem.
+msg_change_ok = Senha alterada com sucesso.
+title = Internet

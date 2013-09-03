@@ -1,0 +1,51 @@
+<table width="600" height="300" border=0>
+	<tr><td align=center><a href=admin?cmd=rst>Reinicia o sistema de Autentica&ccedil;&atilde;o</a></td></tr>
+	<tr><td align=center><a href=userlist>Para Informa&ccedil;&otilde;es de usu&aacute;rios</a></td></tr>
+	<tr>
+		<td>
+		<font size="1">
+		<table border="0" cellpadding="3">
+			<th>Id</th>
+			<th>Name</th>
+			<th>IP</th>
+			<th>MAC</th>
+			<th>-64k</th>
+			<th>Band</th>
+			<th>+64k</th>
+			<th>Blocked</th>
+			<th>Banned</th>
+			<th rowspan="4"></th>
+			<th></th>
+			<th></th>
+			#for $i in $users
+			<tr>
+				<td>$i.id</td>
+				<td>$i.name</td>
+				<td>$i.ip</td>
+				<td>$i.mac</td>
+				<td align=center><a href='./admin?cmd=bdm&uid=$i.id'>-</a></td>
+				<td>$i.bandwidth</td>
+				<td align=center><a href='./admin?cmd=bdp&uid=$i.id'>+</a></td>
+				<td>$bld.is_blocked($i)</td>
+				<td>$bnd.is_banned($i)</td>
+				<td><a href='./admin?cmd=blk&uid=$i.id'>Block</a></td>
+				<td><a href='./admin?cmd=ubk&uid=$i.id'>Unblock</a></td>
+				<td><a href='./admin?cmd=ban&uid=$i.id'>Ban</a></td>
+				<td><a href='./admin?cmd=ubn&uid=$i.id'>Unban</a></td>
+				<td><a href='./admin?cmd=mpg&uid=$i.id'>Message</a></td>
+				<td><a href='./admin?cmd=del&uid=$i.id'>Delete</a></td>
+			</tr>
+			#end for
+		</table>
+		</font>
+		</td>
+	</tr>
+	<tr>
+		<td height="50">&nbsp</td>
+	</tr>
+	<tr>
+		<td>
+		<div align="center">$msg_login</div>
+		</td>
+	</tr>
+</table>

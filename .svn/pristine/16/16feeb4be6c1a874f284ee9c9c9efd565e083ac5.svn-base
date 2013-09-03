@@ -1,0 +1,18 @@
+<table cellpadding="0" cellspacing="0" width="800" align="center">
+    <tr>
+	<td>
+		<table cellpadding="2" cellspacing="1" align="center" width="600">
+			<tr>
+				<td><a href='login_page'><h2>Login</h2></a></td>
+				<td><a href='register_page'><h2>Registro</h2></a></td>
+				<td><a href='change_password_page'><h2>Troca de Senha</h2></a></td>
+				<td><a href='login_page'><h2>Suporte</h2></a></td>
+			</tr>
+		</table>
+	</td>
+    </tr>
+    <tr><td><br></td></tr>
+    <tr>
+	<td align="center"><h1>$page_title</h1></td>
+    </tr>
+</table>

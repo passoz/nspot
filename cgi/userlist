@@ -1,0 +1,71 @@
+#!/usr/bin/python
+
+import os
+import cgi
+from nspot import SystemMessages, Arp, SystemProperties, UserDAO, BlockedDAO, MessageDAO, BannedDAO, UserHandler
+import cgitb; cgitb.enable()
+import datetime
+from Cookie import SimpleCookie
+from Cheetah.Template import Template
+
+
+form = cgi.FieldStorage()
+
+arp = Arp()
+sp = SystemProperties()
+ud = UserDAO()
+sm = SystemMessages()
+ip = os.environ['REMOTE_ADDR']
+
+t = Template(file = sp.get_web_root()+'/htdocs/pages/templates/baselayout.html')
+
+t.system_message = 'System Administration' #self.sm.msg_allfields()
+t.msg_login = '' #sm.msg_login()
+t.page_title = sm.get_title()
+t.head_redirect = "no" # can be yes or no
+t.head_to_login = "no" # can be yes or no
+t.body_page = "ulist" # can be login, register or none
+t.body_message = ''
+t.users = ""
+
+mac = arp.get_mac_from_arp(ip)
+user = ud.retrieve_by_mac(mac)
+bld = BlockedDAO()
+bnd = BannedDAO()
+
+t.bld = bld
+t.bnd = bnd
+
+cmd = form.getvalue('cmd')
+uid = form.getvalue('uid')
+msg = form.getvalue('msg')
+dst = form.getvalue('dst')
+
+
+us = UserDAO().retrieve_by_id(uid)
+users = UserDAO().retrieve_list()
+uh = UserHandler(us)
+
+t.users = users
+
+if os.environ.has_key('HTTP_COOKIE'):
+    c = SimpleCookie(os.environ['HTTP_COOKIE'])
+else:
+    c = SimpleCookie()
+
+if not c.has_key('adm'):
+    c['adm'] = '0'
+
+print c
+
+
+        
+print "Content-type: text/html\n\n"
+
+if c['adm'].value == '1':
+
+    print t
+	    
+else:
+
+    print '<meta http-equiv="refresh" content="0; URL=http://'+sp.get_ip_internal()+'/cgi-bin/auth">'

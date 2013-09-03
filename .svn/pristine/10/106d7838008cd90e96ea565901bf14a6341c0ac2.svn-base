@@ -1,0 +1,106 @@
+#!/usr/bin/env python
+
+
+from nspot import *
+
+def prompt():
+    
+    s = '''
+    
+    NSpot Authentication System for Linux
+    Developed by Fernando Souza (2006)
+    
+    
+    Options:
+    
+    system start/stop/restart - Starts/Stops/Restarts the NSpot Authentication
+    show users - Show users on database
+    show firewall - Show users on firewall
+    user block/unblock/ban/unban <id> - Block/Unblock/Ban/Unban user from system by id
+        
+    '''
+    return s
+            
+    
+if __name__ == '__main__':
+
+    if len(sys.argv) <= 1:
+        print prompt()
+    else:          
+        if sys.argv[1] == 'system' :
+            if len(sys.argv) <= 2:
+                print prompt()
+            else:
+                if sys.argv[2] == 'start' :
+                    FirewallInitializer().start()
+    		    BandwidthControl().start()
+                    print 'NSpot System started'
+                elif sys.argv[2] == 'stop' :
+	            FirewallInitializer().stop()
+    		    BandwidthControl().stop()
+		    print 'NSpot System stopped'
+                elif sys.argv[2] == 'restart' :
+	            FirewallInitializer().stop()
+    		    BandwidthControl().stop()
+	            FirewallInitializer().start()
+    		    BandwidthControl().start()
+                    print 'NSpot System restarted'
+                else :
+                    print prompt()
+
+        elif sys.argv[1] == 'show' :
+            if len(sys.argv) <= 2:
+                print prompt()
+            else:
+                if sys.argv[2] == 'users' :
+                    ud = UserDAO()
+                    l = ud.retrieve_list()
+                    print '\nNSpot Users\n\n'
+                    print 'Id      Ip          Mac               Blocked?   Banned?    Name'
+                    for u in l:
+			bl = BlockedDAO().is_blocked(u)
+			bn = BannedDAO().is_banned(u)
+                        print str(u.id)+'   '+u.ip+'   '+u.mac+'   '+str(bl)+'      '+str(bn)+'     '+u.name
+		    print '\n'
+                elif sys.argv[2] == 'firewall' :
+		    l = FirewallUtil().list()
+		    ud = UserDAO()
+                    print '\nUsers on firewall:\n'
+		    print 'Id      Ip          Mac                    Name'
+		    for i in l:
+			u = ud.retrieve_by_mac(i)
+			print str(u.id)+'   '+u.ip+'   '+u.mac+'      '+u.name
+		    print '\n'
+                else :
+                    print prompt()
+            
+        elif sys.argv[1] == 'user' :
+            if len(sys.argv) <= 2:
+                print prompt()
+            else:
+        	if len(sys.argv) <= 3:
+            	    print prompt()
+		else:
+		    ud = UserDAO()
+		    u = ud.retrieve_by_id(sys.argv[3])
+		    uh = UserHandler(u)
+            	    if sys.argv[2] == 'block' :
+			uh.block_user()
+                	print 'User blocked'
+            	    elif sys.argv[2] == 'unblock' :
+			uh.unblock_user()
+                	print 'User unblocked'
+            	    elif sys.argv[2] == 'ban' :
+            	        uh.ban_user()
+			print 'User banned'
+            	    elif sys.argv[2] == 'unban' :
+                	uh.unban_user()
+			print 'User unbanned'
+            	    else :
+                	print prompt()
+	elif sys.argv[1] == 'install':
+	    pdb = PrepareDb()
+	    pdb.install_tables()
+
+        else:
+            print prompt()

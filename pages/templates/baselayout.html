@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>$page_title</title>
+#include "/var/www/htdocs/pages/templates/head.html"
+</head>
+<body>
+<table width="800" height="450" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="center">
+		#include "/var/www/htdocs/pages/templates/top.html" 
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<table width="800" height="390" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+					<tr>
+						<td height="100" align="center">$system_message</td>
+					</tr>
+					<tr>
+						<td height="100" align="center">
+						#if $body_page == "ulist" 
+						    #include "/var/www/htdocs/pages/templates/userlist.html"
+						#end if 
+						#if $body_page == "login" 
+						    #include "/var/www/htdocs/pages/forms/loginform.html"
+						#end if 
+						#if $body_page == "register" 
+						    #include "/var/www/htdocs/pages/forms/registerform.html"
+						#end if
+						#if $body_page == "auth"
+						    #include "/var/www/htdocs/pages/forms/authform.html"
+						#end if
+						#if $body_page == "adm" 
+						    #include "/var/www/htdocs/pages/templates/admin.html"
+						#end if 
+						#if $body_page == "msg" 
+						    #include "/var/www/htdocs/pages/forms/messageform.html"
+						#end if
+						#if $body_page == "change" 
+						    #include "/var/www/htdocs/pages/forms/changepasswordform.html"
+						#end if
+						#if $body_page == "none" 
+						    $body_message 
+						#end if
+
+						</td>
+					</tr>
+					<tr>
+						<td height="100" align="center">
+						#include "/var/www/htdocs/pages/templates/foot.html" 
+						</td>
+					</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

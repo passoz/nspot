@@ -1,0 +1,89 @@
+#!/usr/bin/python
+
+import os
+import cgi
+from nspot import SystemMessages, Arp, SystemProperties, UserDAO, BlockedDAO
+import cgitb; cgitb.enable()
+import datetime
+from Cheetah.Template import Template
+
+
+form = cgi.FieldStorage()
+
+sp = SystemProperties()
+arp = Arp()
+ud = UserDAO()
+sm = SystemMessages()
+ip = os.environ['REMOTE_ADDR']
+mac = arp.get_mac_from_arp(ip)
+
+t = Template(file = sp.get_web_root()+'/htdocs/pages/templates/baselayout.html')
+
+t.msg_register = sm.msg_register()
+t.page_title = sm.get_title()
+t.head_redirect = "no" # can be yes or no
+t.head_to_login = "no" # can be yes or no
+t.body_page = "register" # can be login, register or none
+t.body_message = sm.msg_allfields()
+
+    
+name = form.getvalue('name')
+address = form.getvalue('address')
+neighborhood = form.getvalue('neighborhood')
+zip = form.getvalue('zip')
+telephone = form.getvalue('telephone')
+celular = form.getvalue('celular')
+email = form.getvalue('email')
+cpf = form.getvalue('cpf')
+password = form.getvalue('password')
+contactemail = form.getvalue('contactemail')
+rg = form.getvalue('rg')
+checkpassword = form.getvalue('checkpassword')
+
+    
+if ud.retrieve_by_mac(mac) != None:
+    mac_from_db = ud.retrieve_by_mac(mac).mac
+else:
+    mac_from_db = None
+        
+if ud.retrieve_by_email(email) != None:
+    mail_from_db = ud.retrieve_by_email(email).email
+else:
+    mail_from_db = None
+        
+network = ""
+registerdate = datetime.datetime.now()
+birthday = datetime.datetime.now()
+bandwidth = sp.default_bandwidth()
+
+print "Content-type: text/html\n\n"
+        
+if (name == None or address == None or neighborhood == None or zip == None or telephone == None or celular == None or email == None or cpf == None or password == None or contactemail == None or rg == None or checkpassword == None or len(name) < 1 or len(address) < 1 or len(neighborhood) < 1 or len(zip) < 1 or len(telephone) < 1 or len(celular) < 1 or len(email) < 1 or len(cpf) < 1 or len(password) < 1 or len(contactemail) < 1 or len(rg) < 1 or len(checkpassword) < 1 ):
+    t.system_message = sm.msg_allfields()
+    print t
+            
+elif (password != checkpassword):
+    t.system_message = sm.msg_notsamepassword()
+    print t
+        
+elif (mac_from_db != None):
+    t.body_page = "login" # can be login, register or none
+    t.msg_login = sm.msg_login()
+    t.system_message = sm.msg_alreadyregistered()
+    print t
+            
+elif (mail_from_db != None):
+    t.system_message = sm.msg_existmail()
+    print t
+    
+else:
+    ud.create(name, address, neighborhood, zip, telephone, celular, email, cpf, ip, mac, 5 , network, registerdate, password, bandwidth, contactemail, rg, birthday)
+    us = ud.retrieve_by_mac(mac)
+    bld = BlockedDAO()
+    bld.create(us)
+    t.head_to_login = "yes" # can be yes or no
+    t.to_login = sm.get_head_to_login()
+    t.body_page = "none" # can be login, register or none
+    t.system_message = sm.msg_registerok()
+    t.body_message = ""
+    print t

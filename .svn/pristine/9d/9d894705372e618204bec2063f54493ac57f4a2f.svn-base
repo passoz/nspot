@@ -1,0 +1,30 @@
+#!/usr/bin/python
+
+import cgi
+from nspot import SystemMessages,SystemProperties
+import cgitb; cgitb.enable()
+from Cheetah.Template import Template
+
+
+form = cgi.FieldStorage()
+
+sm = SystemMessages()
+sp = SystemProperties()
+
+t = Template(file = sp.get_web_root()+'/htdocs/pages/templates/baselayout.html')
+
+
+t.page_title = sm.get_title()
+t.head_redirect = "no" # can be yes or no
+t.head_to_login = "no" # can be yes or no
+t.body_page = "change" # can be login, register or none
+t.body_message = ""
+t.msg_register = ""
+t.msg_login = ""
+t.system_message = ""
+t.redirect = ''
+t.to_login = ''
+    
+print "Content-type: text/html\n\n"    
+print t
+

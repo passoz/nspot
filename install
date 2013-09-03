@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+
+import os, sys
+
+
+def execute( cmd ):
+	r = os.popen( cmd )
+	a = r.readlines()
+	return a
+
+home = '/etc/nspot'
+
+if os.path.isfile("/etc/nspot/conf/nspot.conf"):
+    from nspot import SystemProperties
+else:
+    execute('mkdir '+home+' 2> /dev/null 1> /dev/null')
+    execute('mkdir '+home+'/conf 2> /dev/null 1> /dev/null')
+    execute('touch '+home+'/conf/nspot.conf')
+    execute('cp -rf conf '+home)
+    from nspot import SystemProperties
+
+sp = SystemProperties()
+
+    
+webroot = sp.get_web_root()
+pylib = '/usr/lib/python2.5/site-packages'
+
+execute('mkdir '+home+' 2> /dev/null 1> /dev/null')
+execute('mkdir '+home+'/conf 2> /dev/null 1> /dev/null')
+
+execute('touch '+home+'/conf/nspot.conf')
+
+execute('cp nspot.py '+pylib)
+execute('chown root:root '+pylib+'/nspot.py')
+execute('chmod 755 nspot')
+execute('chmod 755 cgi/*')
+
+execute('cp cgi/* /var/www/cgi-bin')
+execute('cp -rf pages /var/www/htdocs')
+execute('cp -rf pages/index.html /var/www/htdocs')
+execute('cp -rf conf '+home)
+
+execute('cp nspot /usr/bin/')
+
+print "NSpot successful installed"
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == 'db':
+	execute('/usr/bin/nspot install')
+
+execute('rm -rf nspot.pyc')

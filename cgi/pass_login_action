@@ -1,0 +1,71 @@
+#!/usr/bin/python
+
+
+import os
+import cgi
+from nspot import SystemMessages, Arp, SystemProperties, UserDAO, BlockedDAO, MessageDAO, FirewallUtil, UserHandler
+import cgitb; cgitb.enable()
+import datetime
+from Cheetah.Template import Template
+
+
+form = cgi.FieldStorage()
+
+sp = SystemProperties()
+arp = Arp()
+ud = UserDAO()
+sm = SystemMessages()
+ip = os.environ['REMOTE_ADDR']
+
+t = Template(file = sp.get_web_root()+'/htdocs/pages/templates/baselayout.html')
+
+
+t.msg_login = sm.msg_login()
+t.page_title = sm.get_title()
+t.head_redirect = "no" # can be yes or no
+t.head_to_login = "no" # can be yes or no
+t.body_page = "none" # can be login, register or none
+t.body_message = ''
+mac = arp.get_mac_from_arp(ip)
+user = ud.retrieve_by_mac(mac)
+bld = BlockedDAO()
+fu = FirewallUtil()
+
+        
+print "Content-type: text/html\n\n"
+        
+if user == None:
+    t.system_message = sm.msg_notregistered()
+    t.body_message = sm.msg_login()
+    print t
+            
+elif fu.is_on_firewall(user.mac):
+    t.body_page = "none" # can be login, register or none
+    t.system_message = sm.msg_alreadyenabled()
+    print t
+            
+elif ip != user.ip:
+    t.system_message = sm.msg_wrongip()+" "+sm.msg_support()
+    print t
+            
+elif bld.is_blocked(user):
+    t.system_message = sm.msg_blocked()+" "+sm.msg_support()
+    print t
+            
+else :
+    body_page = 'none' # can be login, register or none
+    uh = UserHandler(user)
+    uh.allow()
+    md = MessageDAO()
+    msg = md.retrieve_list(user)
+    if msg != None:
+	t.system_message = sm.msg_warning()+"<br>"
+	for m in msg :
+	    t.body_message += str(m.time)+" : "+m.message+"<br><br>"
+	md.update(user)
+    else:
+	t.head_redirect = "yes" # can be yes or no
+    	t.redirect = sm.get_head_redirect()
+	t.system_message = sm.msg_loginok()
+	    
+    print t
