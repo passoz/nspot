@@ -38,28 +38,28 @@ class SystemCommand:
 class FirewallUtil:
 
     def __init__(self):
-	self.sc = SystemCommand()    
-	self.sp = SystemProperties()
+        self.sc = SystemCommand()    
+        self.sp = SystemProperties()
     
     def list(self):
         a = self.sc.sudoexecute(self.sp.get_iptables()+" -t mangle -L")
-	l = []
+        l = []
         for i in a:
-	    s = i.split()
-	    if len(s) > 8:
-        	if( re.compile( 'MARK' ).match( s[0] ) ):
-    		    l.append(s[6])
-	return l
+            s = i.split()
+            if len(s) > 8:
+                if( re.compile( 'MARK' ).match( s[0] ) ):
+                    l.append(s[6])
+        return l
 	
     def is_on_firewall(self,mac):
-	r = False
-	for m in self.list():
-	    if m == mac:
-		r = True
-		break
-	    else:
-		r = False
-	return r
+        r = False
+        for m in self.list():
+            if m == mac:
+                r = True
+                break
+            else:
+                r = False
+        return r
 
 
 class SystemMessages:
@@ -267,9 +267,9 @@ class BannedDAO:
             Banned(user_id = user.id, time = datetime.datetime.now())
 
     def delete(self,user):
-	uid = self.retrieve_by_userid(user)
-	if self.is_banned(user):
-    	    Banned.delete(uid.id)
+        uid = self.retrieve_by_userid(user)
+        if self.is_banned(user):
+                Banned.delete(uid.id)
         
     def is_banned(self, user):
         if Banned.selectBy(user_id = user.id).count() > 0 :
@@ -286,9 +286,9 @@ class BannedDAO:
     def retrieve_list( self ):
         if Banned.select().count() > 0 :
     	    l = Banned.select()
-	else:
-	    l = None
-        return l
+        else:
+            l = None
+            return l
     
 
 class Blocked( SQLObject ):
@@ -306,9 +306,9 @@ class BlockedDAO:
             Blocked(user_id = user.id, time = datetime.datetime.now())
 
     def delete(self,user):
-	uid = self.retrieve_by_userid(user)
-	if self.is_blocked(user):
-    	    Blocked.delete(uid.id)
+        uid = self.retrieve_by_userid(user)
+        if self.is_blocked(user):
+                Blocked.delete(uid.id)
 
     def is_blocked(self, user):
         if Blocked.selectBy(user_id = user.id).count() > 0 :
@@ -326,9 +326,9 @@ class BlockedDAO:
     def retrieve_list( self ):
         if Blocked.select().count() > 0 :
     	    l = Blocked.select()
-	else:
-	    l = None
-        return l
+        else:
+            l = None
+            return l
     
 class Converter:
     def get_hex(self,num):
@@ -409,11 +409,11 @@ class FirewallInitializer:
         sc.sudoexecute( sp.get_iptables() + " -A INPUT -p icmp --icmp-type 8 -j DROP" )
         sc.sudoexecute( sp.get_iptables() + " -A INPUT -i eth0 -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j ACCEPT" )
         
-    	if bl != None:
-	    for i in bl:
-        	u = UserDAO().retrieve_by_id(i.user_id)
-        	sc.sudoexecute(sp.get_iptables()+ " -A INPUT -j DROP -m mac --mac-source "+ u.mac)
-        	sc.sudoexecute(sp.get_iptables()+ " -A FORWARD -j DROP -m mac --mac-source "+ u.mac)
+        if bl != None:
+            for i in bl:
+                u = UserDAO().retrieve_by_id(i.user_id)
+                sc.sudoexecute(sp.get_iptables()+ " -A INPUT -j DROP -m mac --mac-source "+ u.mac)
+                sc.sudoexecute(sp.get_iptables()+ " -A FORWARD -j DROP -m mac --mac-source "+ u.mac)
 
 
 class GeneratePassword:
@@ -485,16 +485,16 @@ class MessageDAO:
         
     def retrieve_list(self,user):
         
-	if Message.selectBy( user_id = user.id , rd = False ).count() > 0:
-	    l = Message.selectBy(user_id = user.id , rd = False)
-	else:
-	    l = None
-        return l
+        if Message.selectBy( user_id = user.id , rd = False ).count() > 0:
+            l = Message.selectBy(user_id = user.id , rd = False)
+        else:
+            l = None
+            return l
         
     def update(self,user):
         l = Message.selectBy( user_id = user.id , rd = False)
         for m in l:
-	    m.rd = True
+	        m.rd = True
 
 
 class PrepareDb:
@@ -504,7 +504,7 @@ class PrepareDb:
         Log.createTable()
         Blocked.createTable()
         Banned.createTable()
-	Server.createTable()        
+        Server.createTable()        
 
 class Properties:
     def __init__( self ):
@@ -540,24 +540,24 @@ class User( SQLObject ):
 
 class UserDAO:
     def create( self, nam, add, nei, ziz, tel, cel, ema, cpc, ipi, mam, pay, net, reg, pas, ban, con, rgr , btd ):
-        User( name = nam, 
-             address = add, 
-             neighborhood = nei, 
-             zip = ziz, 
-             telephone = tel, 
-             celular = cel, 
-             email = ema, 
-             cpf = cpc, 
-             ip = ipi, 
-             mac = mam, 
-             payday = pay, 
-             network = net, 
-             registerdate = reg, 
-             password = pas, 
-             bandwidth = ban, 
-             contactemail = con, 
-             rg = rgr, 
-	     birthday = btd)
+        User(   name = nam, 
+                address = add, 
+                neighborhood = nei, 
+                zip = ziz, 
+                telephone = tel, 
+                celular = cel, 
+                email = ema, 
+                cpf = cpc, 
+                ip = ipi, 
+                mac = mam, 
+                payday = pay, 
+                network = net, 
+                registerdate = reg, 
+                password = pas, 
+                bandwidth = ban, 
+                contactemail = con, 
+                rg = rgr, 
+	            birthday = btd)
 
     def retrieve_list( self ):
         l = User.select( orderBy = "id")
@@ -600,7 +600,7 @@ class UserDAO:
         user.bandwidth = b
         
     def delete(self,uid):
-	User.delete(uid)
+	    User.delete(uid)
 
 class UserHandler:
     
@@ -622,13 +622,13 @@ class UserHandler:
 
     def allow(self):
     	if not self.is_on_firewall():
-	    self.sc.sudoexecute(self.sp.get_iptables()+ " -A PREROUTING -t mangle -j MARK --set-mark 3 -m mac --mac-source "+ self.user.mac+" -s "+self.user.ip)
+	        self.sc.sudoexecute(self.sp.get_iptables()+ " -A PREROUTING -t mangle -j MARK --set-mark 3 -m mac --mac-source "+ self.user.mac+" -s "+self.user.ip)
     	    self.set_band()
     	    self.log("User Logged In")
 
     def deny(self):
-	if self.is_on_firewall():
-    	    self.sc.execute(self.sp.get_iptables()+ " -D PREROUTING -t mangle -j MARK --set-mark 3 -m mac --mac-source "+ self.user.mac+" -s "+self.user.ip)
+        if self.is_on_firewall():
+                self.sc.execute(self.sp.get_iptables()+ " -D PREROUTING -t mangle -j MARK --set-mark 3 -m mac --mac-source "+ self.user.mac+" -s "+self.user.ip)
 
     def ban(self):
         self.deny()

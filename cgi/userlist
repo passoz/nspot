@@ -56,16 +56,16 @@ else:
 if not c.has_key('adm'):
     c['adm'] = '0'
 
-print c
+print (c)
 
 
         
-print "Content-type: text/html\n\n"
+print ("Content-type: text/html\n\n")
 
 if c['adm'].value == '1':
 
-    print t
+    print (t)
 	    
 else:
 
-    print '<meta http-equiv="refresh" content="0; URL=http://'+sp.get_ip_internal()+'/cgi-bin/auth">'
+    print ('<meta http-equiv="refresh" content="0; URL=http://'+sp.get_ip_internal()+'/cgi-bin/auth">')

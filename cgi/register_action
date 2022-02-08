@@ -56,25 +56,25 @@ registerdate = datetime.datetime.now()
 birthday = datetime.datetime.now()
 bandwidth = sp.default_bandwidth()
 
-print "Content-type: text/html\n\n"
+print ("Content-type: text/html\n\n")
         
 if (name == None or address == None or neighborhood == None or zip == None or telephone == None or celular == None or email == None or cpf == None or password == None or contactemail == None or rg == None or checkpassword == None or len(name) < 1 or len(address) < 1 or len(neighborhood) < 1 or len(zip) < 1 or len(telephone) < 1 or len(celular) < 1 or len(email) < 1 or len(cpf) < 1 or len(password) < 1 or len(contactemail) < 1 or len(rg) < 1 or len(checkpassword) < 1 ):
     t.system_message = sm.msg_allfields()
-    print t
+    print (t)
             
 elif (password != checkpassword):
     t.system_message = sm.msg_notsamepassword()
-    print t
+    print (t)
         
 elif (mac_from_db != None):
     t.body_page = "login" # can be login, register or none
     t.msg_login = sm.msg_login()
     t.system_message = sm.msg_alreadyregistered()
-    print t
+    print (t)
             
 elif (mail_from_db != None):
     t.system_message = sm.msg_existmail()
-    print t
+    print (t)
     
 else:
     ud.create(name, address, neighborhood, zip, telephone, celular, email, cpf, ip, mac, 5 , network, registerdate, password, bandwidth, contactemail, rg, birthday)
@@ -86,4 +86,4 @@ else:
     t.body_page = "none" # can be login, register or none
     t.system_message = sm.msg_registerok()
     t.body_message = ""
-    print t
+    print (t)

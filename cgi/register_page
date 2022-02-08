@@ -25,5 +25,5 @@ t.system_message = ""
 t.redirect = ''
 t.to_login = ''
     
-print "Content-type: text/html\n\n"    
-print t
+print ("Content-type: text/html\n\n")    
+print (t)

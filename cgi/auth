@@ -34,21 +34,21 @@ pw = form.getvalue('pw')
         
 
 if user == None or pw == None or len(user) < 1 or len(pw) < 1 :
-    print "Content-type: text/html\n\n"
+    print ("Content-type: text/html\n\n")
     t.system_message = '' #self.sm.msg_allfields()
-    print t
+    print (t)
 elif user != 'admin' or pw != sp.get_admin_pass():
-    print "Content-type: text/html\n\n"
+    print ("Content-type: text/html\n\n")
     t.system_message = sm.msg_wrongpassword()
-    print t
+    print (t)
 else:
     if os.environ.has_key('HTTP_COOKIE'):
-	c = SimpleCookie(os.environ['HTTP_COOKIE'])
+	    c = SimpleCookie(os.environ['HTTP_COOKIE'])
     else:
-	c = SimpleCookie()
+	    c = SimpleCookie()
 
     c['adm'] = '1'
-    print c
+    print (c)
 
-    print "Content-type: text/html\n\n"
-    print '<meta http-equiv="refresh" content="0; URL=http://'+sp.get_ip_internal()+'/cgi-bin/admin">'
+    print ("Content-type: text/html\n\n")
+    print ('<meta http-equiv="refresh" content="0; URL=http://'+sp.get_ip_internal()+'/cgi-bin/admin">')

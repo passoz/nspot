@@ -32,25 +32,25 @@ bld = BlockedDAO()
 fu = FirewallUtil()
 
         
-print "Content-type: text/html\n\n"
+print ("Content-type: text/html\n\n")
         
 if user == None:
     t.system_message = sm.msg_notregistered()
     t.body_message = sm.msg_login()
-    print t
+    print (t)
             
 elif fu.is_on_firewall(user.mac):
     t.body_page = "none" # can be login, register or none
     t.system_message = sm.msg_alreadyenabled()
-    print t
+    print (t)
             
 elif ip != user.ip:
     t.system_message = sm.msg_wrongip()+" "+sm.msg_support()
-    print t
+    print (t)
             
 elif bld.is_blocked(user):
     t.system_message = sm.msg_blocked()+" "+sm.msg_support()
-    print t
+    print (t)
             
 else :
     body_page = 'none' # can be login, register or none
@@ -59,13 +59,13 @@ else :
     md = MessageDAO()
     msg = md.retrieve_list(user)
     if msg != None:
-	t.system_message = sm.msg_warning()+"<br>"
-	for m in msg :
-	    t.body_message += str(m.time)+" : "+m.message+"<br><br>"
-	md.update(user)
+        t.system_message = sm.msg_warning()+"<br>"
+        for m in msg :
+            t.body_message += str(m.time)+" : "+m.message+"<br><br>"
+        md.update(user) # to fix identation
     else:
-	t.head_redirect = "yes" # can be yes or no
-    	t.redirect = sm.get_head_redirect()
-	t.system_message = sm.msg_loginok()
+        t.head_redirect = "yes" # can be yes or no
+        t.redirect = sm.get_head_redirect()
+        t.system_message = sm.msg_loginok()
 	    
-    print t
+    print (t)

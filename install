@@ -42,10 +42,10 @@ execute('cp -rf conf '+home)
 
 execute('cp nspot /usr/bin/')
 
-print "NSpot successful installed"
+print ("NSpot successful installed")
 
 if len(sys.argv) > 1:
     if sys.argv[1] == 'db':
-	execute('/usr/bin/nspot install')
+	    execute('/usr/bin/nspot install')
 
 execute('rm -rf nspot.pyc')
